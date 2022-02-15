@@ -32,7 +32,7 @@ docker-compose up
 ```
 
 ##### Start consumer of inbound (requests) topic
-This is useful for seeing visually values send  
+This is useful for seeing visually values (headers) send. Execute from project's root.  
 ```shell
 ./bin/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:29092 \
   --property print.key=true --property print.headers=true --property print.timestamp=true \
@@ -40,7 +40,7 @@ This is useful for seeing visually values send
 ```
 
 ##### Start consumer of outbound (responses) topic
-This is useful for seeing visually values send
+This is useful for seeing visually values (headers) send. Execute from project's root.
 ```shell
 ./bin/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:29092 \
   --property print.key=true --property print.headers=true --property print.timestamp=true \
