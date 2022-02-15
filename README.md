@@ -44,7 +44,7 @@ This is useful for seeing visually values (headers) send. Execute from project's
 ```shell
 ./bin/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:29092 \
   --property print.key=true --property print.headers=true --property print.timestamp=true \
-  --topic file-management-requests-01-test_tenant_sftp
+  --topic file-management-responses-01-test_tenant_sftp
 ```
 
 ##### Start the `application`
