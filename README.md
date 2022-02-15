@@ -1,7 +1,7 @@
 
 ### Problem statement
-When application with otel auto-instrumentation publishes message to a kafka topic it generates a trace (b3multi or tracecontex or both, doesn't matter). Let's called `Trace A`.
-Then another application with otel auto-instrumentation picks up the message (there are present Kafka headers for the trace) process it and put to another Kafka topic (or the same doesn't matter).
+When an application with otel auto-instrumentation publishes a message to a Kafka topic it generates a trace (b3multi or tracecontex or both, doesn't matter). Let's call `Trace A`.
+Then another application with otel auto-instrumentation picks up the message (there are present Kafka headers for the trace) processes it and puts it to another Kafka topic (or the same doesn't matter).
 
 `Expected result`: `Trace A` generated initially is preserved in the last message. Context propagation is place.
 
@@ -57,7 +57,7 @@ This is useful for seeing visually values send
     ```
 
 
-##### Start the `produces`
+##### Start the `producer`
 * Using Intellij IDEA you can pick up the [run file automatically](.run/producer.run.xml) with all the predefined configuration
 * Or hardcore
   * build the jar via `mvn clean install`
