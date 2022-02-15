@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+
+  zookeeper:
+    container_name: kop-zookeeper
+    image: confluentinc/cp-zookeeper:6.2.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_LOG4J_ROOT_LOGLEVEL: "WARN"
+    ports:
+      - "2181:2181"
+
+  kafka:
+    container_name: kop-kafka
+    image: confluentinc/cp-kafka:6.2.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: kop-zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kop-kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG4J_ROOT_LOGLEVEL: "WARN"
+      KAFKA_TOOLS_LOG4J_LOGLEVEL: "ERROR"
+      KAFKA_LOG4J_LOGGERS: "org.apache.zookeeper=WARN,org.apache.kafka=WARN,kafka=WARN,kafka.cluster=WARN,kafka.controller=WARN,kafka.coordinator=WARN,kafka.log=WARN,kafka.server=WARN,kafka.zookeeper=WARN,state.change.logger=WARN"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  create-topics:
+    image: confluentinc/cp-kafka:6.2.0
+    container_name: kop-create-topics
+    depends_on:
+      - kafka
+    command: "
+        bash -c 'cub kafka-ready -b kop-kafka:9092 1 120 && \
+        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 3 --replication-factor 1 --topic file-management-requests-01-test_tenant_sftp && \
+        kafka-topics --create --if-not-exists --zookeeper zookeeper:2181 --partitions 3 --replication-factor 1 --topic file-management-responses-01-test_tenant_sftp'"
+    environment:
+      KAFKA_BROKER_ID: ignored
+      KAFKA_ZOOKEEPER_CONNECT: ignored
+
+  tracing:
+    container_name: kop-tracing
+    image: jaegertracing/all-in-one:1.21
+    environment:
+      COLLECTOR_ZIPKIN_HTTP_PORT: 9411
+    ports:
+      - "16686:16686"
+      - "9411:9411"
+
+  otel-collector:
+    container_name: kop-otel-collector
+    image: otel/opentelemetry-collector:0.22.0
+    command: [ "--config=/etc/otel-collector-config.yaml" ]
+    volumes:
+      - ./docker/otel/config/otel-collector.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317"
+    depends_on:
+      - tracing
