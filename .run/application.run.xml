@@ -2,7 +2,7 @@
   <configuration default="false" name="application" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="com.nickem.PlainKafkaApplication" />
     <module name="application" />
-    <option name="VM_PARAMETERS" value="-Dotel.traces.exporter=otlp -Dotel.propagators=b3multi,tracecontext -Dotel.otlp.use.tls=false -Dotel.exporter.otlp.endpoint=http://localhost:4317 -Dotel.resource.attributes=&quot;service.name=kop-application&quot; -javaagent:$PROJECT_DIR$/bin/otel/opentelemetry-javaagent-all-1.10.1.jar" />
+    <option name="VM_PARAMETERS" value="-Dotel.traces.exporter=otlp -Dotel.propagators=b3multi,tracecontext -Dotel.otlp.use.tls=false -Dotel.exporter.otlp.endpoint=http://localhost:4317 -Dotel.resource.attributes=&quot;service.name=kop-application&quot; -Dotel.instrumentation.common.experimental.suppress-messaging-receive-spans=true -javaagent:$PROJECT_DIR$/bin/otel/opentelemetry-javaagent-all-1.10.1.jar" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

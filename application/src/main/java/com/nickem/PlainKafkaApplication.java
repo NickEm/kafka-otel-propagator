@@ -59,8 +59,7 @@ public class PlainKafkaApplication {
             final Long key = Instant.now().getEpochSecond();
             final String valueToProduce = String.format("%s-processed", record.value());
             final ProducerRecord<Long, String> produceRecord = new ProducerRecord<>(RESPONSE_TOPIC, key, valueToProduce);
-
-            producer.send(produceRecord, new Callback() {
+            final Thread producerThread = new Thread(() -> producer.send(produceRecord, new Callback() {
                 public void onCompletion(RecordMetadata metadata, Exception e) {
                     if (e != null) {
                         log.debug("Send failed for record {}", produceRecord, e);
@@ -68,7 +67,8 @@ public class PlainKafkaApplication {
                         log.debug("Record is send successfully!");
                     }
                 }
-            });
+            }));
+            producerThread.start();
         }
     }
 

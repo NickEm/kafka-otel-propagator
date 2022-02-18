@@ -53,7 +53,7 @@ This is useful for seeing visually values (headers) send. Execute from project's
 * Or hardcore
   * build the jar via `mvn clean install`
   * ```shell
-      <your-java-17-path> -Dotel.traces.exporter=otlp -Dotel.propagators=b3multi,tracecontext -Dotel.otlp.use.tls=false -Dotel.exporter.otlp.endpoint=http://localhost:4317 -Dotel.resource.attributes=service.name=kop-application -javaagent:./bin/otel/opentelemetry-javaagent-all-1.10.1.jar -jar ./application/target/application-1.0.0-SNAPSHOT.jar
+      <your-java-17-path> -Dotel.traces.exporter=otlp -Dotel.propagators=b3multi,tracecontext -Dotel.otlp.use.tls=false -Dotel.exporter.otlp.endpoint=http://localhost:4317 -Dotel.resource.attributes=service.name=kop-application -Dotel.instrumentation.common.experimental.suppress-messaging-receive-spans=true -javaagent:./bin/otel/opentelemetry-javaagent-all-1.10.1.jar -jar ./application/target/application-1.0.0-SNAPSHOT.jar
     ```
 
 
@@ -62,5 +62,5 @@ This is useful for seeing visually values (headers) send. Execute from project's
 * Or hardcore
   * build the jar via `mvn clean install`
   * ```shell
-        <your-java-17-path> -Dotel.traces.exporter=otlp -Dotel.propagators=b3multi,tracecontext -Dotel.otlp.use.tls=false -Dotel.exporter.otlp.endpoint=http://localhost:4317 -Dotel.resource.attributes=service.name=kop-producer -javaagent:./bin/otel/opentelemetry-javaagent-all-1.10.1.jar -jar ./producer/target/producer-1.0.0-SNAPSHOT.jar
+        <your-java-17-path> -Dotel.traces.exporter=otlp -Dotel.propagators=b3multi,tracecontext -Dotel.otlp.use.tls=false -Dotel.exporter.otlp.endpoint=http://localhost:4317 -Dotel.resource.attributes=service.name=kop-producer -Dotel.instrumentation.common.experimental.suppress-messaging-receive-spans=true -javaagent:./bin/otel/opentelemetry-javaagent-all-1.10.1.jar -jar ./producer/target/producer-1.0.0-SNAPSHOT.jar
       ```
